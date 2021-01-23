@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.BanList;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -54,11 +55,16 @@ public class Main extends JavaPlugin implements PoloPlugin {
         Logger.getLogger(WebClient.class.getName()).setParent(getLogger());
 
         // Start up the Minecraft event listener
-        MCListener mcListener = new MCListener(webClient);
-
-        getServer().getPluginManager().registerEvents(mcListener, this);
+        PluginManager manager = getServer().getPluginManager();
+        manager.registerEvents(new MCListener(this, webClient), this);
 
         logger.info("Started webclient and chat listeners");
+
+        // Start up the Essentials event listener if the plugin is enabled
+        if (manager.isPluginEnabled("Essentials")) {
+            manager.registerEvents(new Ess3Listener(this, webClient), this);
+            logger.info("Started Essentials listener");
+        }
 
         // See if the address and port are pointing to Marco
         boolean vibeCheck = webClient.vibeCheck();

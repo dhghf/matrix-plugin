@@ -11,6 +11,9 @@ repositories {
             includeGroup 'org.bukkit'
         }
     }
+    maven {
+        url = 'https://ci.ender.zone/plugin/repository/everything/'
+    }
 }
 
 dependencies {
@@ -18,6 +21,9 @@ dependencies {
 
     runtimeOnly "org.slf4j:slf4j-jdk14:${slf4jVersion}"
     compileOnly 'org.bukkit:bukkit:1.15.2-R0.1-SNAPSHOT'
+    compileOnly('net.ess3:EssentialsX:2.16.1') {
+        transitive = false
+    }
 }
 
 assemble.dependsOn shadowJar
